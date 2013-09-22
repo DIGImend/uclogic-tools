@@ -11,7 +11,8 @@ Requirements:
 
 * libusb >= 1.0
 
-Libusb development packages are usually named `libusb-dev` or `libusb-devel`.
+Libusb development packages are usually named `libusb-1.0-0-dev` or
+`libusbx-devel`.
 
 To build from a distribution tarball the usual `./configure && make`
 is sufficient.
