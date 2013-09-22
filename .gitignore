@@ -1,0 +1,16 @@
+*.o
+.deps
+/aclocal.m4
+/autom4te.cache
+/config.h
+/config.h.in
+/config.log
+/config.status
+/configure
+/depcomp
+/huion-probe
+/install-sh
+/missing
+/stamp-h1
+Makefile
+Makefile.in
