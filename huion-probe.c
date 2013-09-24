@@ -129,21 +129,31 @@ hexdump(const unsigned char *ptr, int len)
 static void
 dump(const unsigned char *ptr, int len)
 {
+    const int   length              = 10;
     const int   max_x_off           = 0;
     const int   max_y_off           = 2;
     const int   max_pressure_off    = 6;
     const int   resolution_off      = 8;
+    int         start;
 
     printf("RAW\n\n");
     hexdump(ptr, len);
     printf("\nDECODED\n\n");
 
+    /* Find the start of the parameters block by first finding its end */
+    for (start = len - 1; start >= 0 && ptr[start] == 0; start--);
+    if (ptr[start] == 0x08 && start >= length)
+        start -= length;
+    else
+        start = 0;
+
 #define FIELD(_label, _offset) \
     do {                                                                \
         printf("%14s: ", _label);                                       \
-        if ((_offset) < len - 1) {                                      \
-            printf("%u\n", ptr[_offset] |                               \
-                            ((unsigned int)ptr[(_offset) + 1] << 8));   \
+        if ((start + _offset) < len - 1) {                              \
+            printf("%u\n",                                              \
+                   ptr[start + _offset] |                               \
+                    ((unsigned int)ptr[start + (_offset) + 1] << 8));   \
         } else {                                                        \
             printf("N/A\n");                                            \
         }                                                               \
