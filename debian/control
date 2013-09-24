@@ -1,14 +1,14 @@
-Source: huion-probe
+Source: huion-tools
 Section: misc
 Priority: extra
 Maintainer: Nikolai Kondrashov <spbnick@gmail.com>
 Build-Depends: debhelper (>= 8.0.0), autotools-dev, pkg-config, libusb-1.0-0-dev
 Standards-Version: 3.9.4
-Homepage: https://github.com/DIGImend/huion-probe
+Homepage: https://github.com/DIGImend/huion-tools
 
-Package: huion-probe
+Package: huion-tools
 Architecture: linux-any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Huion graphics tablet probing utility
- Huion-probe is an utility retrieving and displaying parameters of Huion
- graphics tablets, while at the same time enabling proprietary mode.
+Description: Huion graphics tablet diagnostic tools
+ Huion-tools is a collection of programs for collecting and analyzing
+ diagnostic information from Huion graphics tablets.

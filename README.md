@@ -1,8 +1,8 @@
-Huion-probe
+Huion-tools
 ===========
 
-Huion-probe is an utility retrieving and displaying parameters of Huion
-graphics tablets, while at the same time enabling proprietary mode.
+Huion-tools is a collection of programs for collecting and analyzing
+diagnostic information from Huion graphics tablets.
 
 Installation
 ------------
@@ -20,10 +20,14 @@ is sufficient.
 To build from the Git tree autotools are required and `./bootstrap &&
 ./configure && make` is sufficient.
 
-To install huion-probe, use `make install`.
+To install huion-tools, use `make install`.
 
 Usage
 -----
+
+Huion-tools contains huion-probe utility which retrieves and displays
+parameters of Huion graphics tablets, while at the same time enabling their
+proprietary mode.
 
 Huion-probe accepts two arguments: bus number and device address. You can find
 them in `lsusb` output by looking for a device with vendor ID 256c and product
