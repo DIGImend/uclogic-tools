@@ -25,9 +25,13 @@ To install huion-tools, use `make install`.
 Usage
 -----
 
-Huion-tools contains huion-probe utility which retrieves and displays
-parameters of Huion graphics tablets, while at the same time enabling their
-proprietary mode.
+Huion-tools contains two utilities: huion-probe and huion-decode.
+
+Huion-probe dumps diagnostics information from Huion graphics tablets and, as
+a side effect, enables their proprietary mode.
+
+Huion-decode attempts to extract tablet parameters from the information dumped
+by huion-probe.
 
 Huion-probe accepts two arguments: bus number and device address. You can find
 them in `lsusb` output by looking for a device with vendor ID 256c and product
@@ -50,13 +54,17 @@ device address is 3 and you probe it like this:
 
 The output will be something like this:
 
-    RAW
+    S 64  00 7D 20 4E 03 00 FF 07 A0 0F 08 00 00 00 00 00
+    S 65  20 A0
+    S 6E  00 30
+    S 79  4D 00 35 00 30 00 38 00
+    S 7A  01 00 00 00 00 00
 
-     00 7D 20 4E 03 00 FF 07 A0 0F 08 00 00 00 00 00
+Huion-decode simply expects huion-probe output on its input. For the
+diagnostics dump above it will produce this:
 
-    DECODED
+         Max X: 32000
+         Max Y: 20000
+  Max pressure: 2047
+    Resolution: 4000
 
-             Max X: 32000
-             Max Y: 20000
-      Max pressure: 2047
-        Resolution: 4000

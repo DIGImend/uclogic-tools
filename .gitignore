@@ -9,6 +9,7 @@
 /config.status
 /configure
 /depcomp
+/huion-decode
 /huion-probe
 /install-sh
 /missing

@@ -18,5 +18,6 @@
 
 dist_noinst_SCRIPTS = bootstrap
 dist_doc_DATA = README.md
-bin_PROGRAMS = huion-probe
+bin_PROGRAMS = huion-probe huion-decode
 huion_probe_SOURCES = huion-probe.c
+huion_decode_SOURCES = huion-decode.c

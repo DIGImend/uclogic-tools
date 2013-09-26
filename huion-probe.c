@@ -105,68 +105,6 @@ libusb_strerror(enum libusb_error err)
             LIBUSB_FAILURE_CLEANUP(err, _fmt, ##_args); \
     } while (0)
 
-static void
-hexdump(const unsigned char *ptr, int len)
-{
-    static const char   xd[]    = "0123456789ABCDEF";
-    static char         buf[]   = " XX\n";
-    size_t              pos;
-    uint8_t             b;
-
-    for (pos = 1; len > 0; len--, ptr++, pos++)
-    {
-        b = *ptr;
-        buf[1] = xd[b >> 4];
-        buf[2] = xd[b & 0xF];
-
-        (void)fwrite(buf, ((pos % 16 == 0) ? 4 : 3), 1, stdout);
-    }
-
-    if (pos % 16 != 1)
-        putc('\n', stdout);
-}
-
-static void
-dump(const unsigned char *ptr, int len)
-{
-    const int   length              = 10;
-    const int   max_x_off           = 0;
-    const int   max_y_off           = 2;
-    const int   max_pressure_off    = 6;
-    const int   resolution_off      = 8;
-    int         start;
-
-    printf("RAW\n\n");
-    hexdump(ptr, len);
-    printf("\nDECODED\n\n");
-
-    /* Find the start of the parameters block by first finding its end */
-    for (start = len - 1; start >= 0 && ptr[start] == 0; start--);
-    if (ptr[start] == 0x08 && start >= length)
-        start -= length;
-    else
-        start = 0;
-
-#define FIELD(_label, _offset) \
-    do {                                                                \
-        printf("%14s: ", _label);                                       \
-        if ((start + _offset) < len - 1) {                              \
-            printf("%u\n",                                              \
-                   ptr[start + _offset] |                               \
-                    ((unsigned int)ptr[start + (_offset) + 1] << 8));   \
-        } else {                                                        \
-            printf("N/A\n");                                            \
-        }                                                               \
-    } while (0)
-    FIELD("Max X", max_x_off);
-    FIELD("Max Y", max_y_off);
-    FIELD("Max pressure", max_pressure_off);
-    FIELD("Resolution", resolution_off);
-#undef FIELD
-    fflush(stdout);
-}
-
-
 int
 probe(uint8_t bus_num, uint8_t dev_addr)
 {
@@ -177,8 +115,11 @@ probe(uint8_t bus_num, uint8_t dev_addr)
     size_t                  i;
     libusb_device          *dev;
     libusb_device_handle   *handle      = NULL;
-    unsigned char           buf[32];
+    unsigned char           buf[256];
     int                     len;
+    uint8_t                 idx_list[]  = {0x64};
+    uint8_t                 idx;
+    const unsigned char    *p;
 
     LIBUSB_GUARD(libusb_init(&ctx), "initialize libusb");
 
@@ -196,16 +137,29 @@ probe(uint8_t bus_num, uint8_t dev_addr)
     LIBUSB_GUARD(libusb_open(dev, &handle), "open device");
     libusb_free_device_list(dev_list, true);
     dev_list = NULL;
-    LIBUSB_GUARD(len = libusb_get_string_descriptor(
-                            handle,
-                            /* Device info descriptor index */
-                            0x64,
-                            /* English (United States) */
-                            0x0409,
-                            buf,
-                            sizeof(buf)),
-                 "get the string descriptor");
-    dump(buf, len);
+    for (i = 0; i < sizeof(idx_list) / sizeof(*idx_list); i++)
+    {
+        idx = idx_list[i];
+
+        /* Attempt to get the descriptor */
+        len = libusb_get_string_descriptor(
+                                handle, idx,
+                                /* English (United States) */
+                                0x0409,
+                                buf, sizeof(buf));
+
+        /* If the descriptor doesn't exist */
+        if (len == LIBUSB_ERROR_PIPE)
+            continue;
+        LIBUSB_GUARD(len, "get string descriptor 0x%.2X", idx);
+
+        /* Print the descriptor */
+        printf("S %.2hhX ", idx);
+        for (p = buf; p < buf + len; p++)
+            printf(" %.2hhX", *p);
+        printf("\n");
+        fflush(stdout);
+    }
     result = 0;
 
 cleanup:
