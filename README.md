@@ -63,8 +63,8 @@ The output will be something like this:
 Huion-decode simply expects huion-probe output on its input. For the
 diagnostics dump above it will produce this:
 
-         Max X: 32000
-         Max Y: 20000
-  Max pressure: 2047
-    Resolution: 4000
+             Max X: 32000
+             Max Y: 20000
+      Max pressure: 2047
+        Resolution: 4000
 
