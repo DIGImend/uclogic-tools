@@ -29,7 +29,7 @@
 #include <strings.h>
 
 #ifndef HAVE_LIBUSB_STRERROR
-const char *
+static const char *
 libusb_strerror(enum libusb_error err)
 {
     switch (err)
@@ -105,7 +105,7 @@ libusb_strerror(enum libusb_error err)
             LIBUSB_FAILURE_CLEANUP(err, _fmt, ##_args); \
     } while (0)
 
-int
+static int
 probe(uint8_t bus_num, uint8_t dev_addr)
 {
     int                     result      = 1;
@@ -170,7 +170,7 @@ cleanup:
     return result;
 }
 
-void
+static void
 usage(FILE *file, const char *name)
 {
     fprintf(file,
