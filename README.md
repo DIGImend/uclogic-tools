@@ -54,11 +54,11 @@ device address is 3 and you probe it like this:
 
 The output will be something like this:
 
-    S 64  00 7D 20 4E 03 00 FF 07 A0 0F 08 00 00 00 00 00
-    S 65  20 A0
-    S 6E  00 30
-    S 79  4D 00 35 00 30 00 38 00
-    S 7A  01 00 00 00 00 00
+    S 64  12 03 00 7D 20 4E 03 00 FF 07 A0 0F 08 00 00 00 00 00
+    S 65  04 03 20 A0
+    S 6E  04 03 00 30
+    S 79  0A 03 4D 00 35 00 30 00 38 00
+    S 7A  08 03 01 00 00 00 00 00
 
 Huion-decode simply expects huion-probe output on its input. For the
 diagnostics dump above it will produce this:
