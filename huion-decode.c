@@ -140,8 +140,7 @@ decode_chunk(const uint8_t *buf, int len)
             return d->decode(buf + 1, len - 1);
     }
 
-    GENERIC_ERROR("Uknown chunk type '%c'", *buf);
-    return 1;
+    return 0;
 }
 
 static int
