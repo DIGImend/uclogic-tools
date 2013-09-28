@@ -88,12 +88,18 @@ print_unicode(const uint8_t *ptr, int len)
     }
 }
 
+static void
+print_field_unicode(const char *name, const uint8_t *ptr, int len)
+{
+    printf("%14s: ", name);
+    print_unicode(ptr, len);
+    putchar('\n');
+}
+
 static int
 decode_internal_model(const uint8_t *ptr, int len)
 {
-    printf("%14s: ", "Internal model");
-    print_unicode(ptr + 2, len - 2);
-    putchar('\n');
+    print_field_unicode("Internal model", ptr + 2, len - 2);
     return 0;
 }
 
@@ -122,8 +128,24 @@ decode_desc(const uint8_t *buf, int len)
     return 0;
 }
 
+static int
+decode_manufacturer(const uint8_t *buf, int len)
+{
+    print_field_unicode("Manufacturer", buf, len);
+    return 0;
+}
+
+static int
+decode_product(const uint8_t *buf, int len)
+{
+    print_field_unicode("Product", buf, len);
+    return 0;
+}
+
 /* List of chunk decoders */
 static const struct decoder chunk_list[] = {
+    {'M',   decode_manufacturer},
+    {'P',   decode_product},
     {'S',   decode_desc},
     {'\0',  NULL}
 };

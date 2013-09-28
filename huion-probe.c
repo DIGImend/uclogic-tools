@@ -105,6 +105,16 @@ libusb_strerror(enum libusb_error err)
             LIBUSB_FAILURE_CLEANUP(err, _fmt, ##_args); \
     } while (0)
 
+static void
+print_chunk(char type, unsigned char *ptr, int len)
+{
+    printf("%c", type);
+    for (; len > 0; ptr++, len--)
+        printf(" %.2hhX", *ptr);
+    printf("\n");
+    fflush(stdout);
+}
+
 static int
 probe(uint8_t bus_num, uint8_t dev_addr)
 {
@@ -115,11 +125,12 @@ probe(uint8_t bus_num, uint8_t dev_addr)
     size_t                  i;
     libusb_device          *dev;
     libusb_device_handle   *handle      = NULL;
-    unsigned char           buf[256];
+    unsigned char           buf[257];
     int                     len;
     uint8_t                 idx_list[]  = {0x64, 0x65, 0x6E, 0x79, 0x7A};
     uint8_t                 idx;
-    const unsigned char    *p;
+
+    struct libusb_device_descriptor     dev_desc;
 
     LIBUSB_GUARD(libusb_init(&ctx), "initialize libusb");
 
@@ -137,16 +148,39 @@ probe(uint8_t bus_num, uint8_t dev_addr)
     LIBUSB_GUARD(libusb_open(dev, &handle), "open device");
     libusb_free_device_list(dev_list, true);
     dev_list = NULL;
+
+    LIBUSB_GUARD(libusb_get_device_descriptor(dev, &dev_desc),
+                 "get device descriptor");
+    if (dev_desc.iManufacturer != 0) {
+        LIBUSB_GUARD(len = libusb_get_string_descriptor(
+                                    handle, dev_desc.iManufacturer,
+                                    /* English (United States) */
+                                    0x0409,
+                                    buf, sizeof(buf)),
+                     "get manufacturer string descriptor");
+        print_chunk('M', buf + 2, len - 2);
+    }
+    if (dev_desc.iProduct != 0) {
+        LIBUSB_GUARD(len = libusb_get_string_descriptor(
+                                    handle, dev_desc.iProduct,
+                                    /* English (United States) */
+                                    0x0409,
+                                    buf, sizeof(buf)),
+                     "get product string descriptor");
+        print_chunk('P', buf + 2, len - 2);
+    }
+
     for (i = 0; i < sizeof(idx_list) / sizeof(*idx_list); i++)
     {
         idx = idx_list[i];
+        buf[0] = idx;
 
         /* Attempt to get the descriptor */
         len = libusb_get_string_descriptor(
                                 handle, idx,
                                 /* English (United States) */
                                 0x0409,
-                                buf, sizeof(buf));
+                                buf + 1, sizeof(buf) - 1);
 
         /* If the descriptor doesn't exist */
         if (len == LIBUSB_ERROR_PIPE)
@@ -154,11 +188,7 @@ probe(uint8_t bus_num, uint8_t dev_addr)
         LIBUSB_GUARD(len, "get string descriptor 0x%.2X", idx);
 
         /* Print the descriptor */
-        printf("S %.2hhX ", idx);
-        for (p = buf; p < buf + len; p++)
-            printf(" %.2hhX", *p);
-        printf("\n");
-        fflush(stdout);
+        print_chunk('S', buf, len + 1);
     }
     result = 0;
 
