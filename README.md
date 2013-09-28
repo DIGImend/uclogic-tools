@@ -67,4 +67,4 @@ diagnostics dump above it will produce this:
              Max Y: 20000
       Max pressure: 2047
         Resolution: 4000
-
+    Internal model: M508

@@ -79,9 +79,30 @@ decode_params(const uint8_t *ptr, int len)
     return 0;
 }
 
+static void
+print_unicode(const uint8_t *ptr, int len)
+{
+    uint16_t c;
+    for (; len > 1; ptr += 2, len -= 2) {
+        c = ptr[0] | (ptr[1] << 8);
+        putchar((c >= 0x20 && c <= 0x7E) ? c : '?');
+    }
+}
+
+static int
+decode_internal_model(const uint8_t *ptr, int len)
+{
+    printf("%14s: ", "Internal model");
+    print_unicode(ptr + 2, len - 2);
+    putchar('\n');
+    fflush(stdout);
+    return 0;
+}
+
 /* List of string descriptor decoders */
 static const struct decoder desc_list[] = {
     {0x64, decode_params},
+    {0x79, decode_internal_model},
     {0x00, NULL}
 };
 
