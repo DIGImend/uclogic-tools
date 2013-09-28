@@ -54,30 +54,21 @@ struct decoder {
 static int
 decode_params(const uint8_t *ptr, int len)
 {
-    const int   length              = 10;
-    const int   max_x_off           = 0;
-    const int   max_y_off           = 2;
-    const int   max_pressure_off    = 6;
-    const int   resolution_off      = 8;
-    int         start;
-
-    /* Find the start of the parameters block by first finding its end */
-    for (start = len - 1; start >= 0 && ptr[start] == 0; start--);
-    if (ptr[start] == 0x08 && start >= length)
-        start -= length;
-    else
-        start = 0;
+    const int   max_x_off           = 2;
+    const int   max_y_off           = 4;
+    const int   max_pressure_off    = 8;
+    const int   resolution_off      = 10;
 
 #define FIELD(_label, _offset) \
-    do {                                                                \
-        printf("%14s: ", _label);                                       \
-        if ((start + _offset) < len - 1) {                              \
-            printf("%u\n",                                              \
-                   ptr[start + _offset] |                               \
-                    ((unsigned int)ptr[start + (_offset) + 1] << 8));   \
-        } else {                                                        \
-            printf("N/A\n");                                            \
-        }                                                               \
+    do {                                                        \
+        printf("%14s: ", _label);                               \
+        if ((_offset) < len - 1) {                              \
+            printf("%u\n",                                      \
+                   ptr[_offset] |                               \
+                    ((unsigned int)ptr[(_offset) + 1] << 8));   \
+        } else {                                                \
+            printf("N/A\n");                                    \
+        }                                                       \
     } while (0)
     FIELD("Max X", max_x_off);
     FIELD("Max Y", max_y_off);
