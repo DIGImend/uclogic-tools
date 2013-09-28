@@ -75,7 +75,6 @@ decode_params(const uint8_t *ptr, int len)
     FIELD("Max pressure", max_pressure_off);
     FIELD("Resolution", resolution_off);
 #undef FIELD
-    fflush(stdout);
     return 0;
 }
 
@@ -95,7 +94,6 @@ decode_internal_model(const uint8_t *ptr, int len)
     printf("%14s: ", "Internal model");
     print_unicode(ptr + 2, len - 2);
     putchar('\n');
-    fflush(stdout);
     return 0;
 }
 
@@ -217,6 +215,6 @@ main(int argc, char **argv)
         exit(1);
     }
 
-    setbuf(stdout, NULL);
+    setlinebuf(stdout);
     return decode();
 }
