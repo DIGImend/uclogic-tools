@@ -1,3 +1,10 @@
+huion-tools (3) unstable; urgency=low
+
+  * Add dumping/decoding of manufacturer and product.
+  * Add internal model name decoding.
+
+ -- Nikolai Kondrashov <spbnick@gmail.com>  Mon, 14 Oct 2013 11:03:29 +0300
+
 huion-tools (2) unstable; urgency=low
 
   * Initial Release.
