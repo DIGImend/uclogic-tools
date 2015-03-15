@@ -1,3 +1,10 @@
+uclogic-tools (4) unstable; urgency=low
+
+  * Rename the package to uclogic-tools.
+  * Add enabling abstract button mode/decoding of buttons status.
+
+ -- Nikolai Kondrashov <spbnick@gmail.com>  Sun, 15 Mar 2015 19:50:06 +0200
+
 huion-tools (3) unstable; urgency=low
 
   * Add dumping/decoding of manufacturer and product.
