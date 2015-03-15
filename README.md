@@ -15,13 +15,18 @@ Requirements:
 Libusb development packages are usually named `libusb-1.0-0-dev` or
 `libusbx-devel`.
 
-To build from a distribution tarball the usual `./configure && make`
-is sufficient.
+Download one of the release packages from the [releases
+page](https://github.com/DIGImend/uclogic-tools/releases).
+
+Use your Linux distribution tools to install either .rpm or .deb packages.
+
+Otherwise, to build and install from a source tarball the usual
+`./configure && make` is sufficient.
 
 To build from the Git tree autotools are required and `./bootstrap &&
 ./configure && make` is sufficient.
 
-To install uclogic-tools, use `make install`.
+To install uclogic-tools from source, use `make install`.
 
 Usage
 -----
