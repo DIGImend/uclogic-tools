@@ -59,21 +59,35 @@ device address is 3 and you probe it like this:
 
 The output will be something like this:
 
-    M 48 00 55 00 49 00 4F 00 4E 00
-    P 35 00 38 00 30 00
-    S 64 12 03 00 7D 20 4E 03 00 FF 07 A0 0F 08 00 00 00 00 00
+    M 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    P 31 00 30 00 35 00 39 00 34 00 00 00 00 00 00 00 00 00 00 00
+    S 64 0E 03 40 9C A8 61 03 00 FF 07 A0 0F 08 00
     S 65 04 03 20 A0
     S 6E 04 03 00 30
-    S 79 0A 03 4D 00 35 00 30 00 38 00
-    S 7A 08 03 01 00 00 00 00 00
+    S 79 14 03 48 00 41 00 36 00 30 00 2D 00 46 00 34 00 30 00 30 00
+    S 7A 08 03 01 08 00 00 00 00
+    S 7B 0C 03 48 00 4B 00 20 00 4F 00 6E 00
 
-Uclogic-decode simply expects uclogic-probe output on its input. For the
-diagnostics dump above it will produce this:
+The above is what a driver developer would need when asking about a
+"uclogic-probe" output.
 
-      Manufacturer: HUION
-           Product: 580
-             Max X: 32000
-             Max Y: 20000
+Uclogic-decode simply expects uclogic-probe output on its input. E.g. if you
+saved the output of uclogic-probe into a file named "probe.txt", then this
+command would decode it:
+
+    uclogic-decode < probe.txt
+
+You can pipe uclogic-probe output directly to uclogic-decode too:
+
+    uclogic-probe 1 3 | uclogic-decode
+
+For the diagnostics dump above either of these commands will produce this:
+
+      Manufacturer: ????????
+           Product: 10594?????
+             Max X: 40000
+             Max Y: 25000
       Max pressure: 2047
         Resolution: 4000
-    Internal model: M508
+    Internal model: HA60-F400
+    Buttons status: HK On
