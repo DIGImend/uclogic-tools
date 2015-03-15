@@ -127,7 +127,8 @@ probe(uint8_t bus_num, uint8_t dev_addr)
     libusb_device_handle   *handle      = NULL;
     unsigned char           buf[257];
     int                     len;
-    uint8_t                 idx_list[]  = {0x64, 0x65, 0x6E, 0x79, 0x7A};
+    uint8_t                 idx_list[]  = {0x64, 0x65, 0x6E, 0x79, 0x7A,
+                                           0x7B};
     uint8_t                 idx;
 
     struct libusb_device_descriptor     dev_desc;

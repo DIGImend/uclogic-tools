@@ -103,10 +103,18 @@ decode_internal_model(const uint8_t *ptr, int len)
     return 0;
 }
 
+static int
+decode_buttons_status(const uint8_t *ptr, int len)
+{
+    print_field_unicode("Buttons status", ptr + 2, len - 2);
+    return 0;
+}
+
 /* List of string descriptor decoders */
 static const struct decoder desc_list[] = {
     {0x64, decode_params},
     {0x79, decode_internal_model},
+    {0x7b, decode_buttons_status},
     {0x00, NULL}
 };
 
