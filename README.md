@@ -26,19 +26,19 @@ To install uclogic-tools, use `make install`.
 Usage
 -----
 
-Uclogic-tools contains two utilities: uclogic-probe and uclogic-decode.
+Uclogic-tools contains two utilities: `uclogic-probe` and `uclogic-decode`.
 
-Uclogic-probe dumps diagnostics information from UC-Logic (and rebranded)
+`Uclogic-probe` dumps diagnostics information from UC-Logic (and rebranded)
 graphics tablets and attempts to enable additional functionality.
 
-Uclogic-decode attempts to extract tablet parameters from the information dumped
-by uclogic-probe.
+`Uclogic-decode` attempts to extract tablet parameters from the information dumped
+by `uclogic-probe`.
 
 Note that the additional functions might be incompatible with the tablet
 driver you're currently using and the tablet might stop working properly after
-you execute uclogic-probe. To fix that simply reconnect the tablet.
+you execute `uclogic-probe`. To fix that simply reconnect the tablet.
 
-Uclogic-probe accepts two arguments: bus number and device address. You can find
+`Uclogic-probe` accepts two arguments: bus number and device address. You can find
 them in `lsusb` output by looking for a device with vendor ID 256c and product
 ID 006e.
 
@@ -69,15 +69,15 @@ The output will be something like this:
     S 7B 0C 03 48 00 4B 00 20 00 4F 00 6E 00
 
 The above is what a driver developer would need when asking about a
-"uclogic-probe" output.
+`uclogic-probe` output.
 
-Uclogic-decode simply expects uclogic-probe output on its input. E.g. if you
-saved the output of uclogic-probe into a file named "probe.txt", then this
+`Uclogic-decode` simply expects `uclogic-probe` output on its input. E.g. if you
+saved the output of `uclogic-probe` into a file named "probe.txt", then this
 command would decode it:
 
     uclogic-decode < probe.txt
 
-You can pipe uclogic-probe output directly to uclogic-decode too:
+You can pipe `uclogic-probe` output directly to `uclogic-decode` too:
 
     uclogic-probe 1 3 | uclogic-decode
 
