@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2013 Nikolai Kondrashov
  *
- * This file is part of huion-tools.
+ * This file is part of uclogic-tools.
  *
- * Huion-tools is free software; you can redistribute it and/or modify
+ * Uclogic-tools is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
  *
- * Huion-tools is distributed in the hope that it will be useful,
+ * Uclogic-tools is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with huion-tools; if not, write to the Free Software
+ * along with uclogic-tools; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @author Nikolai Kondrashov <spbnick@gmail.com>
@@ -222,7 +222,7 @@ usage(FILE *file, const char *name)
 {
     fprintf(file,
             "Usage: %s\n"
-            "Decode a Huion tablet probe dump.\n"
+            "Decode a UC-Logic tablet probe dump.\n"
             "\n",
             name);
 }

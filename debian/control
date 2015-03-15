@@ -1,14 +1,14 @@
-Source: huion-tools
+Source: uclogic-tools
 Section: misc
 Priority: extra
 Maintainer: Nikolai Kondrashov <spbnick@gmail.com>
 Build-Depends: debhelper (>= 8.0.0), autotools-dev, pkg-config, libusb-1.0-0-dev
 Standards-Version: 3.9.4
-Homepage: https://github.com/DIGImend/huion-tools
+Homepage: https://github.com/DIGImend/uclogic-tools
 
-Package: huion-tools
+Package: uclogic-tools
 Architecture: linux-any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Huion graphics tablet diagnostic tools
- Huion-tools is a collection of programs for collecting and analyzing
- diagnostic information from Huion graphics tablets.
+Description: UC-Logic graphics tablet diagnostic tools
+ Uclogic-tools is a collection of programs for collecting and analyzing
+ diagnostic information from UC-Logic (and rebranded) graphics tablets.

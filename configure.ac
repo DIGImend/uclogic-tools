@@ -1,7 +1,7 @@
 #
 # Copyright (C) 2013 Nikolai Kondrashov
 #
-# This file is part of huion-tools.
+# This file is part of uclogic-tools.
 #
 # Usbhid-dump is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.61)
-AC_INIT([huion-tools], [3])
+AC_INIT([uclogic-tools], [3])
 AM_INIT_AUTOMAKE([1.9 -Wall foreign])
 AM_MAINTAINER_MODE
 AC_CONFIG_HEADER([config.h])

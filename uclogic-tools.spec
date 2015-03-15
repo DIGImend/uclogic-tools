@@ -1,7 +1,7 @@
-Name:       huion-tools
+Name:       uclogic-tools
 Version:    3
 Release:    1%{?dist}
-Summary:    Huion graphics tablet diagnostic tools
+Summary:    UC-Logic graphics tablet diagnostic tools
 
 License:    GPLv2+
 Source:     %{name}-%{version}.tar.gz
@@ -10,8 +10,8 @@ Requires:   libusbx
 BuildRequires:	libusbx-devel
 
 %description
- Huion-tools is a collection of programs for collecting and analyzing
- diagnostic information from Huion graphics tablets.
+ Uclogic-tools is a collection of programs for collecting and analyzing
+ diagnostic information from UC-Logic (and rebranded) graphics tablets.
 
 %prep
 %setup -q
@@ -26,6 +26,6 @@ make install DESTDIR=%{buildroot}
 %files
 %doc
 %{_defaultdocdir}/%{name}
-%{_bindir}/huion-*
+%{_bindir}/uclogic-*
 
 %changelog

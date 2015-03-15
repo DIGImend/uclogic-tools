@@ -9,8 +9,8 @@
 /config.status
 /configure
 /depcomp
-/huion-decode
-/huion-probe
+/uclogic-decode
+/uclogic-probe
 /install-sh
 /missing
 /stamp-h1

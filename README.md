@@ -1,8 +1,9 @@
-Huion-tools
-===========
+Uclogic-tools
+=============
 
-Huion-tools is a collection of programs for collecting and analyzing
-diagnostic information from Huion graphics tablets.
+Uclogic-tools is a collection of programs for collecting and analyzing
+diagnostic information from UC-Logic graphics tablets (rebranded as Huion,
+Yiynova, Ugee, Monoprice, Turcom and others).
 
 Installation
 ------------
@@ -20,20 +21,20 @@ is sufficient.
 To build from the Git tree autotools are required and `./bootstrap &&
 ./configure && make` is sufficient.
 
-To install huion-tools, use `make install`.
+To install uclogic-tools, use `make install`.
 
 Usage
 -----
 
-Huion-tools contains two utilities: huion-probe and huion-decode.
+Uclogic-tools contains two utilities: uclogic-probe and uclogic-decode.
 
-Huion-probe dumps diagnostics information from Huion graphics tablets and, as
-a side effect, enables their proprietary mode.
+Uclogic-probe dumps diagnostics information from UC-Logic (and rebranded)
+graphics tablets and, as a side effect, enables their proprietary mode.
 
-Huion-decode attempts to extract tablet parameters from the information dumped
-by huion-probe.
+Uclogic-decode attempts to extract tablet parameters from the information dumped
+by uclogic-probe.
 
-Huion-probe accepts two arguments: bus number and device address. You can find
+Uclogic-probe accepts two arguments: bus number and device address. You can find
 them in `lsusb` output by looking for a device with vendor ID 256c and product
 ID 006e.
 
@@ -50,7 +51,7 @@ For example, in this `lsusb` output:
 The first line corresponds to a Huion tablet, and so its bus number is 1,
 device address is 3 and you probe it like this:
 
-    huion-probe 1 3
+    uclogic-probe 1 3
 
 The output will be something like this:
 
@@ -62,7 +63,7 @@ The output will be something like this:
     S 79 0A 03 4D 00 35 00 30 00 38 00
     S 7A 08 03 01 00 00 00 00 00
 
-Huion-decode simply expects huion-probe output on its input. For the
+Uclogic-decode simply expects uclogic-probe output on its input. For the
 diagnostics dump above it will produce this:
 
       Manufacturer: HUION
