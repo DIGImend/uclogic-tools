@@ -29,7 +29,11 @@ Usage
 Uclogic-tools contains two utilities: uclogic-probe and uclogic-decode.
 
 Uclogic-probe dumps diagnostics information from UC-Logic (and rebranded)
-graphics tablets and, as a side effect, enables their proprietary mode.
+graphics tablets and attempts to enable additional functionality.
+
+Note that the additional functions might be incompatible with the tablet
+driver you're currently using and the tablet might stop working properly after
+you execute uclogic-probe. To fix that simply reconnect the tablet.
 
 Uclogic-decode attempts to extract tablet parameters from the information dumped
 by uclogic-probe.
