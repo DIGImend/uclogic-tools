@@ -18,6 +18,7 @@
 
 dist_noinst_SCRIPTS = bootstrap
 dist_doc_DATA = README.md
+dist_noinst_DATA = uclogic-tools.spec
 bin_PROGRAMS = uclogic-probe uclogic-decode
 uclogic_probe_SOURCES = uclogic-probe.c
 uclogic_decode_SOURCES = uclogic-decode.c
