@@ -60,7 +60,7 @@ For example, in this `lsusb` output:
 The first line corresponds to a Huion tablet, and so its bus number is 1,
 device address is 3 and you probe it like this:
 
-    uclogic-probe 1 3
+    sudo uclogic-probe 1 3
 
 The output will be something like this:
 
@@ -84,7 +84,7 @@ this command would decode it:
 
 You can pipe `uclogic-probe` output directly to `uclogic-decode` too:
 
-    uclogic-probe 1 3 | uclogic-decode
+    sudo uclogic-probe 1 3 | uclogic-decode
 
 For the diagnostics dump above either of these commands will produce this:
 
