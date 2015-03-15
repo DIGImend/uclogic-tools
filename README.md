@@ -31,12 +31,12 @@ Uclogic-tools contains two utilities: uclogic-probe and uclogic-decode.
 Uclogic-probe dumps diagnostics information from UC-Logic (and rebranded)
 graphics tablets and attempts to enable additional functionality.
 
+Uclogic-decode attempts to extract tablet parameters from the information dumped
+by uclogic-probe.
+
 Note that the additional functions might be incompatible with the tablet
 driver you're currently using and the tablet might stop working properly after
 you execute uclogic-probe. To fix that simply reconnect the tablet.
-
-Uclogic-decode attempts to extract tablet parameters from the information dumped
-by uclogic-probe.
 
 Uclogic-probe accepts two arguments: bus number and device address. You can find
 them in `lsusb` output by looking for a device with vendor ID 256c and product
