@@ -190,24 +190,33 @@ decode(void)
 
     assert(sizeof(buf) > 0);
 
+    /* For each "word" (a run of non-whitespace characters) on stdin */
     while (scanf("%ms", &word) == 1) {
         /* If it's a single character chunk type */
         if (word[0] != '\0' && !isxdigit(word[0]) && word[1] == '\0') {
+            /* If we read a chunk before and it is failing decoding */
             if (p != buf && decode_chunk(buf, p - buf) != 0)
                 FAILURE_CLEANUP("decode chunk");
+            /* Start a new chunk */
             p = buf;
             n = word[0];
+        /* Otherwise it is some other word */
         } else {
+            /* If there was nothing else for this chunk (i.e. no type) */
             if (p == buf)
                 ERROR_CLEANUP("Expecting chunk type indicator");
+            /* Try to decode the word as a hex byte */
             errno = 0;
             n = strtoul(word, &end, 16);
             if (*end != '\0' || errno != 0 || n > UINT8_MAX)
                 ERROR_CLEANUP("Invalid byte \"%s\"", word);
+            /* If there's no space in the buffer */
             if (p >= buf + sizeof(buf))
                 ERROR_CLEANUP("Descriptor too long");
         }
+        /* Write the byte into the buffer */
         *p++ = n;
+        /* Discard the read word */
         free(word);
         word = NULL;
     };
