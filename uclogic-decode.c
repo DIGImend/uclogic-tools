@@ -179,7 +179,12 @@ decode(void)
     int             result      = 1;
     char           *word        = NULL;
     char           *end;
-    uint8_t         buf[256];
+    /*
+     * Chunk type byte +
+     * string descriptor index byte +
+     * maximum descriptor length
+     */
+    uint8_t         buf[258];
     uint8_t        *p           = buf;
     unsigned long   n;
 
