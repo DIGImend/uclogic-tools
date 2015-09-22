@@ -153,22 +153,30 @@ probe(uint8_t bus_num, uint8_t dev_addr)
     LIBUSB_GUARD(libusb_get_device_descriptor(dev, &dev_desc),
                  "get device descriptor");
     if (dev_desc.iManufacturer != 0) {
-        LIBUSB_GUARD(len = libusb_get_string_descriptor(
-                                    handle, dev_desc.iManufacturer,
-                                    /* English (United States) */
-                                    0x0409,
-                                    buf, sizeof(buf)),
-                     "get manufacturer string descriptor");
-        print_chunk('M', buf + 2, len - 2);
+        len = libusb_get_string_descriptor(handle, dev_desc.iManufacturer,
+                                           /* English (United States) */
+                                           0x0409,
+                                           buf, sizeof(buf));
+        if (len >= 0)
+            print_chunk('M', buf + 2, len - 2);
+        else {
+            LIBUSB_FAILURE(len, "get manufacturer string descriptor");
+            if (len != LIBUSB_ERROR_PIPE)
+                goto cleanup;
+        }
     }
     if (dev_desc.iProduct != 0) {
-        LIBUSB_GUARD(len = libusb_get_string_descriptor(
-                                    handle, dev_desc.iProduct,
-                                    /* English (United States) */
-                                    0x0409,
-                                    buf, sizeof(buf)),
-                     "get product string descriptor");
-        print_chunk('P', buf + 2, len - 2);
+        len = libusb_get_string_descriptor(handle, dev_desc.iProduct,
+                                           /* English (United States) */
+                                           0x0409,
+                                           buf, sizeof(buf));
+        if (len >= 0)
+            print_chunk('P', buf + 2, len - 2);
+        else {
+            LIBUSB_FAILURE(len, "get product string descriptor");
+            if (len != LIBUSB_ERROR_PIPE)
+                goto cleanup;
+        }
     }
 
     for (i = 0; i < sizeof(idx_list) / sizeof(*idx_list); i++)
