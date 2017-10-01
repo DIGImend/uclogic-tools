@@ -63,7 +63,7 @@ struct decoder {
 #define PRINT_FIELD_U16(_offset, _label) \
     do {                                                        \
         printf(FIELD_HEAD_FMT, _label);                         \
-        if ((_offset) < len - 1) {                              \
+        if ((_offset) + 1 < len) {                              \
             printf("%u\n",                                      \
                    ptr[_offset] |                               \
                     ((unsigned int)ptr[(_offset) + 1] << 8));   \
