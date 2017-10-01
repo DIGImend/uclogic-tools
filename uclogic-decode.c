@@ -46,6 +46,8 @@
         goto cleanup;                   \
     } while (0)
 
+#define FIELD_HEAD_FMT "%14s: "
+
 struct decoder {
     uint8_t     id;
     int       (*decode)(const uint8_t *ptr, int len);
@@ -61,7 +63,7 @@ decode_params(const uint8_t *ptr, int len)
 
 #define FIELD(_label, _offset) \
     do {                                                        \
-        printf("%14s: ", _label);                               \
+        printf(FIELD_HEAD_FMT, _label);                         \
         if ((_offset) < len - 1) {                              \
             printf("%u\n",                                      \
                    ptr[_offset] |                               \
@@ -91,7 +93,7 @@ print_unicode(const uint8_t *ptr, int len)
 static void
 print_field_unicode(const char *name, const uint8_t *ptr, int len)
 {
-    printf("%14s: ", name);
+    printf(FIELD_HEAD_FMT, name);
     print_unicode(ptr, len);
     putchar('\n');
 }
