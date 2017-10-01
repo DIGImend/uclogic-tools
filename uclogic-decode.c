@@ -46,7 +46,7 @@
         goto cleanup;                   \
     } while (0)
 
-#define FIELD_HEAD_FMT "%14s: "
+#define FIELD_HEAD_FMT "%22s: "
 
 struct decoder {
     uint8_t     id;
@@ -67,6 +67,26 @@ struct decoder {
             printf("%u\n",                                      \
                    ptr[_offset] |                               \
                     ((unsigned int)ptr[(_offset) + 1] << 8));   \
+        } else {                                                \
+            printf("N/A\n");                                    \
+        }                                                       \
+    } while (0)
+
+/**
+ * Print a 24-bit unsigned field.
+ * Assumes "ptr" and "len" variables are in scope.
+ *
+ * @param _offset   Field offset from ptr, bytes.
+ * @param _label    Field label string literal.
+ */
+#define PRINT_FIELD_U24(_offset, _label) \
+    do {                                                        \
+        printf(FIELD_HEAD_FMT, _label);                         \
+        if ((_offset) + 2 < len) {                              \
+            printf("%u\n",                                      \
+                   ptr[_offset] |                               \
+                    ((unsigned int)ptr[(_offset) + 1] << 8) |   \
+                    ((unsigned int)ptr[(_offset) + 2] << 16));  \
         } else {                                                \
             printf("N/A\n");                                    \
         }                                                       \
@@ -114,11 +134,38 @@ decode_buttons_status(const uint8_t *ptr, int len)
     return 0;
 }
 
+static int
+decode_params2(const uint8_t *ptr, int len)
+{
+    PRINT_FIELD_U24(2, "Max X");
+    PRINT_FIELD_U24(5, "Max Y");
+    PRINT_FIELD_U16(8, "Max pressure");
+    PRINT_FIELD_U16(10, "Resolution");
+    return 0;
+}
+
+static int
+decode_unknown_string1(const uint8_t *ptr, int len)
+{
+    print_field_unicode("Unknown string #1", ptr + 2, len - 2);
+    return 0;
+}
+
+static int
+decode_internal_manufacturer(const uint8_t *ptr, int len)
+{
+    print_field_unicode("Internal manufacturer", ptr + 2, len - 2);
+    return 0;
+}
+
 /* List of string descriptor decoders */
 static const struct decoder desc_list[] = {
     {0x64, decode_params},
     {0x79, decode_internal_model},
     {0x7b, decode_buttons_status},
+    {0xc8, decode_params2},
+    {0xc9, decode_unknown_string1},
+    {0xca, decode_internal_manufacturer},
     {0x00, NULL}
 };
 
