@@ -53,10 +53,14 @@ struct decoder {
     int       (*decode)(const uint8_t *ptr, int len);
 };
 
-static int
-decode_params(const uint8_t *ptr, int len)
-{
-#define FIELD(_offset, _label) \
+/**
+ * Print a 16-bit unsigned field.
+ * Assumes "ptr" and "len" variables are in scope.
+ *
+ * @param _offset   Field offset from ptr, bytes.
+ * @param _label    Field label string literal.
+ */
+#define PRINT_FIELD_U16(_offset, _label) \
     do {                                                        \
         printf(FIELD_HEAD_FMT, _label);                         \
         if ((_offset) < len - 1) {                              \
@@ -67,11 +71,14 @@ decode_params(const uint8_t *ptr, int len)
             printf("N/A\n");                                    \
         }                                                       \
     } while (0)
-    FIELD(2, "Max X");
-    FIELD(4, "Max Y");
-    FIELD(8, "Max pressure");
-    FIELD(10, "Resolution");
-#undef FIELD
+
+static int
+decode_params(const uint8_t *ptr, int len)
+{
+    PRINT_FIELD_U16(2, "Max X");
+    PRINT_FIELD_U16(4, "Max Y");
+    PRINT_FIELD_U16(8, "Max pressure");
+    PRINT_FIELD_U16(10, "Resolution");
     return 0;
 }
 
