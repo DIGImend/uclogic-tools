@@ -56,12 +56,7 @@ struct decoder {
 static int
 decode_params(const uint8_t *ptr, int len)
 {
-    const int   max_x_off           = 2;
-    const int   max_y_off           = 4;
-    const int   max_pressure_off    = 8;
-    const int   resolution_off      = 10;
-
-#define FIELD(_label, _offset) \
+#define FIELD(_offset, _label) \
     do {                                                        \
         printf(FIELD_HEAD_FMT, _label);                         \
         if ((_offset) < len - 1) {                              \
@@ -72,10 +67,10 @@ decode_params(const uint8_t *ptr, int len)
             printf("N/A\n");                                    \
         }                                                       \
     } while (0)
-    FIELD("Max X", max_x_off);
-    FIELD("Max Y", max_y_off);
-    FIELD("Max pressure", max_pressure_off);
-    FIELD("Resolution", resolution_off);
+    FIELD(2, "Max X");
+    FIELD(4, "Max Y");
+    FIELD(8, "Max pressure");
+    FIELD(10, "Resolution");
 #undef FIELD
     return 0;
 }
