@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
 #include <strings.h>
 
 #define GENERIC_ERROR(_fmt, _args...) \
@@ -262,7 +263,7 @@ decode_chunk(const uint8_t *buf, int len)
 }
 
 static int
-decode(void)
+decode(FILE *input)
 {
     int             result      = 1;
     char           *word        = NULL;
@@ -279,7 +280,7 @@ decode(void)
     assert(sizeof(buf) > 0);
 
     /* For each "word" (a run of non-whitespace characters) on stdin */
-    while (scanf("%ms", &word) == 1) {
+    while (fscanf(input, "%ms", &word) == 1) {
         /* If it's a single character chunk type */
         if (word[0] != '\0' && !isxdigit(word[0]) && word[1] == '\0') {
             /* If we read a chunk before and it is failing decoding */
@@ -323,7 +324,7 @@ static void
 usage(FILE *file, const char *name)
 {
     fprintf(file,
-            "Usage: %s\n"
+            "Usage: %s [PROBE_OUTPUT]\n"
             "Decode a UC-Logic tablet probe dump.\n"
             "\n",
             name);
@@ -333,6 +334,7 @@ int
 main(int argc, char **argv)
 {
     const char *name;
+    FILE *input;
 
     name = rindex(argv[0], '/');
     if (name == NULL)
@@ -340,12 +342,20 @@ main(int argc, char **argv)
     else
         name++;
 
-    if (argc != 1) {
+    if (argc > 2) {
         fprintf(stderr, "Invalid number of arguments\n");
         usage(stderr, name);
         exit(1);
+    } else if (argc > 1) {
+        input = fopen(argv[1], "r");
+        if (input == NULL) {
+            fprintf(stderr, "Failed opening %s: %s\n", argv[1],
+                    strerror(errno));
+        }
+    } else {
+        input = stdin;
     }
 
     setlinebuf(stdout);
-    return decode();
+    return decode(input);
 }
