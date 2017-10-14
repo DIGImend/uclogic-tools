@@ -159,10 +159,9 @@ probe(uint8_t bus_num, uint8_t dev_addr)
                                            buf, sizeof(buf));
         if (len >= 0)
             print_chunk('M', buf + 2, len - 2);
-        else {
+        else if (len != LIBUSB_ERROR_PIPE) {
             LIBUSB_FAILURE(len, "get manufacturer string descriptor");
-            if (len != LIBUSB_ERROR_PIPE)
-                goto cleanup;
+            goto cleanup;
         }
     }
     if (dev_desc.iProduct != 0) {
@@ -172,10 +171,9 @@ probe(uint8_t bus_num, uint8_t dev_addr)
                                            buf, sizeof(buf));
         if (len >= 0)
             print_chunk('P', buf + 2, len - 2);
-        else {
+        else if (len != LIBUSB_ERROR_PIPE) {
             LIBUSB_FAILURE(len, "get product string descriptor");
-            if (len != LIBUSB_ERROR_PIPE)
-                goto cleanup;
+            goto cleanup;
         }
     }
 
