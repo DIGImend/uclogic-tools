@@ -46,23 +46,43 @@
         goto cleanup;                   \
     } while (0)
 
-#define FIELD_HEAD_FMT "%22s: "
+/** Format string for a field header */
+#define FIELD_HEAD_FMT "    | %22s: "
+
+/** Format string for a field header with hex index */
+#define IDX_FIELD_HEAD_FMT " %02x | %22s: "
+
+/** Format string for a sub-field header */
+#define SUB_FIELD_HEAD_FMT "    | %30s: "
+
+/** Blank output line string */
+#define BLANK_LINE_STR "    |"
 
 struct decoder {
+    /** Decoder ID */
     uint8_t     id;
-    int       (*decode)(const uint8_t *ptr, int len);
+    /**
+     * Decoder function.
+     *
+     * @param idx   Index of the decoded data (e.g. descriptor number).
+     * @param ptr   Pointer to the decoded data.
+     * @param len   Length of the decoded data.
+     *
+     * @return Zero if decoded successfully, non-zero otherwise.
+     */
+    int       (*decode)(uint8_t idx, const uint8_t *ptr, int len);
 };
 
 /**
- * Print a 16-bit unsigned field.
+ * Print a 16-bit unsigned sub-field.
  * Assumes "ptr" and "len" variables are in scope.
  *
  * @param _offset   Field offset from ptr, bytes.
  * @param _label    Field label string literal.
  */
-#define PRINT_FIELD_U16(_offset, _label) \
+#define PRINT_SUB_FIELD_U16(_offset, _label) \
     do {                                                        \
-        printf(FIELD_HEAD_FMT, _label);                         \
+        printf(SUB_FIELD_HEAD_FMT, _label);                     \
         if ((_offset) + 1 < len) {                              \
             printf("%u\n",                                      \
                    ptr[_offset] |                               \
@@ -73,15 +93,15 @@ struct decoder {
     } while (0)
 
 /**
- * Print a 24-bit unsigned field.
+ * Print a 24-bit unsigned sub-field.
  * Assumes "ptr" and "len" variables are in scope.
  *
  * @param _offset   Field offset from ptr, bytes.
  * @param _label    Field label string literal.
  */
-#define PRINT_FIELD_U24(_offset, _label) \
+#define PRINT_SUB_FIELD_U24(_offset, _label) \
     do {                                                        \
-        printf(FIELD_HEAD_FMT, _label);                         \
+        printf(SUB_FIELD_HEAD_FMT, _label);                     \
         if ((_offset) + 2 < len) {                              \
             printf("%u\n",                                      \
                    ptr[_offset] |                               \
@@ -91,16 +111,6 @@ struct decoder {
             printf("N/A\n");                                    \
         }                                                       \
     } while (0)
-
-static int
-decode_params(const uint8_t *ptr, int len)
-{
-    PRINT_FIELD_U16(2, "Max X");
-    PRINT_FIELD_U16(4, "Max Y");
-    PRINT_FIELD_U16(8, "Max pressure");
-    PRINT_FIELD_U16(10, "Resolution");
-    return 0;
-}
 
 static void
 print_unicode(const uint8_t *ptr, int len)
@@ -120,47 +130,70 @@ print_field_unicode(const char *name, const uint8_t *ptr, int len)
     putchar('\n');
 }
 
-static int
-decode_internal_model(const uint8_t *ptr, int len)
+static void
+print_idx_field_unicode(uint8_t idx, const char *name,
+                        const uint8_t *ptr, int len)
 {
-    print_field_unicode("Internal model", ptr + 2, len - 2);
+    printf(IDX_FIELD_HEAD_FMT, idx, name);
+    print_unicode(ptr, len);
+    putchar('\n');
+}
+
+static int
+decode_params1(uint8_t idx, const uint8_t *ptr, int len)
+{
+    print_idx_field_unicode(idx, "Params block #1", ptr + 2, len - 2);
+    PRINT_SUB_FIELD_U16(2, "Max X");
+    PRINT_SUB_FIELD_U16(4, "Max Y");
+    PRINT_SUB_FIELD_U16(8, "Max pressure");
+    PRINT_SUB_FIELD_U16(10, "Resolution");
+    puts(BLANK_LINE_STR);
     return 0;
 }
 
 static int
-decode_buttons_status(const uint8_t *ptr, int len)
+decode_internal_model(uint8_t idx, const uint8_t *ptr, int len)
 {
-    print_field_unicode("Buttons status", ptr + 2, len - 2);
+    print_idx_field_unicode(idx, "Internal model", ptr + 2, len - 2);
     return 0;
 }
 
 static int
-decode_params2(const uint8_t *ptr, int len)
+decode_buttons_status(uint8_t idx, const uint8_t *ptr, int len)
 {
-    PRINT_FIELD_U24(2, "Max X");
-    PRINT_FIELD_U24(5, "Max Y");
-    PRINT_FIELD_U16(8, "Max pressure");
-    PRINT_FIELD_U16(10, "Resolution");
+    print_idx_field_unicode(idx, "Buttons status", ptr + 2, len - 2);
     return 0;
 }
 
 static int
-decode_unknown_string1(const uint8_t *ptr, int len)
+decode_params2(uint8_t idx, const uint8_t *ptr, int len)
 {
-    print_field_unicode("Unknown string #1", ptr + 2, len - 2);
+    print_idx_field_unicode(idx, "Params block #2", ptr + 2, len - 2);
+    PRINT_SUB_FIELD_U24(2, "Max X");
+    PRINT_SUB_FIELD_U24(5, "Max Y");
+    PRINT_SUB_FIELD_U16(8, "Max pressure");
+    PRINT_SUB_FIELD_U16(10, "Resolution");
+    puts(BLANK_LINE_STR);
     return 0;
 }
 
 static int
-decode_internal_manufacturer(const uint8_t *ptr, int len)
+decode_unknown_string1(uint8_t idx, const uint8_t *ptr, int len)
 {
-    print_field_unicode("Internal manufacturer", ptr + 2, len - 2);
+    print_idx_field_unicode(idx, "Unknown string #1", ptr + 2, len - 2);
+    return 0;
+}
+
+static int
+decode_internal_manufacturer(uint8_t idx, const uint8_t *ptr, int len)
+{
+    print_idx_field_unicode(idx, "Internal manufacturer", ptr + 2, len - 2);
     return 0;
 }
 
 /* List of string descriptor decoders */
 static const struct decoder desc_list[] = {
-    {0x64, decode_params},
+    {0x64, decode_params1},
     {0x79, decode_internal_model},
     {0x7b, decode_buttons_status},
     {0xc8, decode_params2},
@@ -170,9 +203,11 @@ static const struct decoder desc_list[] = {
 };
 
 static int
-decode_desc(const uint8_t *buf, int len)
+decode_desc(uint8_t idx, const uint8_t *buf, int len)
 {
     const struct decoder   *d;
+
+    (void)idx;
 
     if (len == 0) {
         GENERIC_ERROR("String descriptor without index");
@@ -181,22 +216,24 @@ decode_desc(const uint8_t *buf, int len)
 
     for (d = desc_list; d->decode != NULL; d++) {
         if (d->id == *buf)
-            return d->decode(buf + 1, len - 1);
+            return d->decode(d->id, buf + 1, len - 1);
     }
 
     return 0;
 }
 
 static int
-decode_manufacturer(const uint8_t *buf, int len)
+decode_manufacturer(uint8_t idx, const uint8_t *buf, int len)
 {
+    (void)idx;
     print_field_unicode("Manufacturer", buf, len);
     return 0;
 }
 
 static int
-decode_product(const uint8_t *buf, int len)
+decode_product(uint8_t idx, const uint8_t *buf, int len)
 {
+    (void)idx;
     print_field_unicode("Product", buf, len);
     return 0;
 }
@@ -218,7 +255,7 @@ decode_chunk(const uint8_t *buf, int len)
 
     for (d = chunk_list; d->decode != NULL; d++) {
         if (d->id == *buf)
-            return d->decode(buf + 1, len - 1);
+            return d->decode(d->id, buf + 1, len - 1);
     }
 
     return 0;
