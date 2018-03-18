@@ -13,7 +13,8 @@ Requirements:
 * libusb >= 1.0
 
 Libusb development packages are usually named `libusb-1.0-0-dev` or
-`libusbx-devel`.
+`libusbx-devel`. Debian-based systems also need the `pkg-config` package
+installed.
 
 Download one of the release packages from the [releases
 page](https://github.com/DIGImend/uclogic-tools/releases).
