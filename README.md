@@ -24,7 +24,7 @@ Use your Linux distribution tools to install either .rpm or .deb packages.
 Otherwise, to build and install from a source tarball the usual
 `./configure && make` is sufficient.
 
-To build from the Git tree autotools are required and `./bootstrap &&
+To build from the Git tree autotools are required and `autoreconf -i -f &&
 ./configure && make` is sufficient.
 
 To install uclogic-tools from source, use `make install`.
