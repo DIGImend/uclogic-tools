@@ -1,5 +1,5 @@
 Name:       uclogic-tools
-Version:    4
+Version:    5
 Release:    1%{?dist}
 Summary:    UC-Logic graphics tablet diagnostic tools
 

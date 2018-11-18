@@ -1,3 +1,15 @@
+uclogic-tools (5) unstable; urgency=low
+
+  * Increase size of the decoding buffer in uclogic-decode to support all
+    descriptor sizes.
+  * Ignore missing manufacturer/product string descriptors.
+  * Add dumping of Huion new-model string descriptors, including another
+    one with parameters, which enables the new-model mode.
+  * Improve decoded output formatting.
+  * Support specifying uclogic-decode input on the command line.
+
+ -- Nikolai Kondrashov <spbnick@gmail.com>  Sat, 01 Dec 2018 17:14:14 +0200
+
 uclogic-tools (4) unstable; urgency=low
 
   * Rename the package to uclogic-tools.
