@@ -16,7 +16,6 @@
 # along with uclogic-tools; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-dist_noinst_SCRIPTS = bootstrap
 dist_doc_DATA = README.md
 dist_noinst_DATA = uclogic-tools.spec
 bin_PROGRAMS = uclogic-probe uclogic-decode
