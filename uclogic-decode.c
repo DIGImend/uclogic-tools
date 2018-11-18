@@ -179,9 +179,9 @@ decode_params2(uint8_t idx, const uint8_t *ptr, int len)
 }
 
 static int
-decode_unknown_string1(uint8_t idx, const uint8_t *ptr, int len)
+decode_firmware_version(uint8_t idx, const uint8_t *ptr, int len)
 {
-    print_idx_field_unicode(idx, "Unknown string #1", ptr + 2, len - 2);
+    print_idx_field_unicode(idx, "Firmware version", ptr + 2, len - 2);
     return 0;
 }
 
@@ -198,7 +198,7 @@ static const struct decoder desc_list[] = {
     {0x79, decode_internal_model},
     {0x7b, decode_buttons_status},
     {0xc8, decode_params2},
-    {0xc9, decode_unknown_string1},
+    {0xc9, decode_firmware_version},
     {0xca, decode_internal_manufacturer},
     {0x00, NULL}
 };
