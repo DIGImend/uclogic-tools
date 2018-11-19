@@ -17,15 +17,15 @@ To build uclogic-tools from the source code, you will need the libusb
 development package installed. It is usually named `libusb-1.0-0-dev` or
 `libusbx-devel`.
 
-If you're using a release tarball, then you can build uclogic-tools by
-executing this command in the unpacked source code directory:
+If you're using a release tarball, you can build uclogic-tools by executing
+this command in the unpacked source code directory:
 
     ./configure && make
 
 If you're building a development version downloaded with Git or via GitHub's
 "Download ZIP" link, you will also need `autoconf` and `automake` installed on
 all distros, as well as `pkg-config` on Debian-based systems. After that you
-should be able to build uclogic-tools by executing the following in source
+should be able to build uclogic-tools by executing the following in the source
 code directory:
 
     autoreconf -i -f && ./configure && make
