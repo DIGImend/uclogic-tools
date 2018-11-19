@@ -8,26 +8,32 @@ Yiynova, Ugee, Monoprice, Turcom and others).
 Installation
 ------------
 
-Requirements:
-
-* libusb >= 1.0
-
-Libusb development packages are usually named `libusb-1.0-0-dev` or
-`libusbx-devel`. Debian-based systems also need the `pkg-config` package
-installed.
-
 Download one of the release packages from the [releases
 page](https://github.com/DIGImend/uclogic-tools/releases).
 
 Use your Linux distribution tools to install either .rpm or .deb packages.
 
-Otherwise, to build and install from a source tarball the usual
-`./configure && make` is sufficient.
+To build uclogic-tools from the source code, you will need the libusb
+development package installed. It is usually named `libusb-1.0-0-dev` or
+`libusbx-devel`.
 
-To build from the Git tree autotools are required and `autoreconf -i -f &&
-./configure && make` is sufficient.
+If you're using a release tarball, then you can build uclogic-tools by
+executing this command in the unpacked source code directory:
 
-To install uclogic-tools from source, use `make install`.
+    ./configure && make
+
+If you're building a development version downloaded with Git or via GitHub's
+"Download ZIP" link, you will also need `autoconf` and `automake` installed on
+all distros, as well as `pkg-config` on Debian-based systems. After that you
+should be able to build uclogic-tools by executing the following in source
+code directory:
+
+    autoreconf -i -f && ./configure && make
+
+After building uclogic-tools from the source code, you can run the compiled
+programs directly, or install them with this command, from the same directory:
+
+    sudo make install
 
 Usage
 -----
