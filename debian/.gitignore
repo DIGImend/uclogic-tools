@@ -2,3 +2,6 @@
 /uclogic-tools.debhelper.log
 /uclogic-tools.substvars
 /uclogic-tools
+/.debhelper
+/autoreconf.after
+/autoreconf.before
